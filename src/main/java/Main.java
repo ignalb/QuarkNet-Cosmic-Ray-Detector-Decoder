@@ -8,7 +8,6 @@ public class Main {
 
 	public static File file;		// filename to write to
 	private static File fileRead;	// filename to read (if given)
-	private static final String endSequence = "[EOF]";
 	
 	/**
 	 * @param args <ul>
@@ -21,32 +20,22 @@ public class Main {
 	public static void main(String[] args){
 		
 		if(args.length == 0)
-			args = inputToArg();
-		if(args.length == 1)	//File, either local or absolute
-		{
-			Debug.println("1 arg found");
-			String filename = args[0];
-			if(filename.charAt(0) == '"' && filename.charAt(filename.length()-1) == '"')
-				filename = filename.substring(1, filename.length()-1);
-			
-			fileRead = new File(filename);
-			try{
-				fileRead = fileRead.getCanonicalFile();
-			} catch(java.io.IOException e) {
-				fileRead = fileRead.getAbsoluteFile();
-				e.printStackTrace();
-			} catch(SecurityException e) {
-				e.printStackTrace();
-				return;
-			}
-			
+			args = inputToArgs();
+		Debug.println("1 arg found");
+		String filename = args[0];
+		if(filename.charAt(0) == '"' && filename.charAt(filename.length()-1) == '"')
+			filename = filename.substring(1, filename.length()-1);
+		
+		fileRead = new File(filename);
+		try{
+			fileRead = fileRead.getCanonicalFile();
+		} catch(java.io.IOException e) {
+			fileRead = fileRead.getAbsoluteFile();
+			e.printStackTrace();
+		} catch(SecurityException e) {
+			e.printStackTrace();
+			return;
 		}
-		else if(args.length > 1)
-		{
-			Debug.println(args.length + " args found");
-			//TODO raw data
-		}
-		return;
 		
 	}
 	
@@ -54,26 +43,14 @@ public class Main {
 	 * If no args were inputed, their values are taken from here
 	 * @return the equivalent to main()'s args
 	 */
-	private static String[] inputToArg(){
+	private static String[] inputToArgs(){
 		Scanner in = new Scanner(System.in);
-		String parser;
 		ArrayList<String> args = new ArrayList<String>();
 		
-		System.out.printf("Enter a filename to read or the raw data.\n"
-				+ "To finalize input enter the following character sequence: '%s'\n"
-				+ "(Ctrl-z could achieve the same on a DOS system)\n", endSequence);
+		System.out.println("Enter a filename or a filepath to read."); 
 		
-		while(true){
-			parser = in.next();
-			
-			if(parser.equalsIgnoreCase(endSequence))
-			{
-				break;
-			}
-			else
-			{
-				args.add(parser);
-			}
+		while(in.hasNext()){
+			args.add(in.next());
 		}
 		
 		in.close();
