@@ -28,28 +28,23 @@ public class Main {
 			String filename = args[0];
 			if(filename.charAt(0) == '"' && filename.charAt(filename.length()-1) == '"')
 				filename = filename.substring(1, filename.length()-1);
-			if(filename.length() <= 4 || filename.substring(filename.lastIndexOf('.'), filename.length()).equals(".txt"))
-			{
-				System.err.println("Invalid Filename");
-				return;	//Should throw Exception
-			}
 			
+			fileRead = new File(filename);
 			try{
-				fileRead = new File(filename);
-			} catch(Exception e) {
-				System.err.println(e);
+				fileRead = fileRead.getCanonicalFile();
+			} catch(java.io.IOException e) {
+				fileRead = fileRead.getAbsoluteFile();
+				e.printStackTrace();
+			} catch(SecurityException e) {
+				e.printStackTrace();
 				return;
 			}
 			
-			if(!fileRead.isAbsolute())	//First include fileRead.exists(), throw exception otherwise
-			{
-				
-			}
 		}
 		else if(args.length > 1)
 		{
 			Debug.println(args.length + " args found");
-			
+			//TODO raw data
 		}
 		return;
 		
