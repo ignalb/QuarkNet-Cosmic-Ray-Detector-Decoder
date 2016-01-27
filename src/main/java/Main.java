@@ -1,11 +1,14 @@
 package main.java;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
 	public static File file;		// filename to write to
 	private static File fileRead;	// filename to read (if given)
+	private static final String endSequence = "[EOF]";
 	
 	/**
 	 * @param args <ul>
@@ -17,31 +20,69 @@ public class Main {
 	 */
 	public static void main(String[] args){
 		
-		argTypes argType = getArgType(args);
+		if(args.length == 0)
+			args = inputToArg();
+		if(args.length == 1)	//File, either local or absolute
+		{
+			Debug.println("1 arg found");
+			String filename = args[0];
+			if(filename.charAt(0) == '"' && filename.charAt(filename.length()-1) == '"')
+				filename = filename.substring(1, filename.length()-1);
+			if(filename.length() <= 4 || filename.substring(filename.lastIndexOf('.'), filename.length()).equals(".txt"))
+			{
+				System.err.println("Invalid Filename");
+				return;	//Should throw Exception
+			}
+			
+			try{
+				fileRead = new File(filename);
+			} catch(Exception e) {
+				System.err.println(e);
+				return;
+			}
+			
+			if(!fileRead.isAbsolute())	//First include fileRead.exists(), throw exception otherwise
+			{
+				
+			}
+		}
+		else if(args.length > 1)
+		{
+			Debug.println(args.length + " args found");
+			
+		}
+		return;
 		
-		switch(argType){
-			case FILE_LOCAL:
-				
+	}
+	
+	/**
+	 * If no args were inputed, their values are taken from here
+	 * @return the equivalent to main()'s args
+	 */
+	private static String[] inputToArg(){
+		Scanner in = new Scanner(System.in);
+		String parser;
+		ArrayList<String> args = new ArrayList<String>();
+		
+		System.out.printf("Enter a filename to read or the raw data.\n"
+				+ "To finalize input enter the following character sequence: '%s'\n"
+				+ "(Ctrl-z could achieve the same on a DOS system)\n", endSequence);
+		
+		while(true){
+			parser = in.next();
+			
+			if(parser.equalsIgnoreCase(endSequence))
+			{
 				break;
-			case FILE_PATH:
-				
-				break;
-			case DATA_RAW:
-				
-				break;
-			case ERROR:
-				//TODO ask for user input and rerun getArgType
+			}
+			else
+			{
+				args.add(parser);
+			}
 		}
 		
+		in.close();
+		return args.toArray(new String[args.size()]);
 	}
 	
-	private static argTypes getArgType(String[] args){
-		//TODO method
-		return argTypes.ERROR;
-	}
-	
-}
-
-enum argTypes {
-	FILE_LOCAL, FILE_PATH, DATA_RAW, ERROR
 }
