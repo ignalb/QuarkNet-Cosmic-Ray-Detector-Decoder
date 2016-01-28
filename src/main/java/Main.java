@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-
-	public static File file;		// filename to write to
-	private static File fileRead;	// filename to read (if given)
 	
 	/**
 	 * @param args <ul>
@@ -18,10 +15,11 @@ public class Main {
 	 * 			//TODO provide sample data
 	 */
 	public static void main(String[] args){
+		File fileRead;
 		
-		if(args.length == 0)
+		while(args.length == 0)
 			args = inputToArgs();
-		Debug.println("1 arg found");
+		Debug.printf("%i arg found", args.length);
 		String filename = args[0];
 		if(filename.charAt(0) == '"' && filename.charAt(filename.length()-1) == '"')
 			filename = filename.substring(1, filename.length()-1);
@@ -36,6 +34,8 @@ public class Main {
 			e.printStackTrace();
 			return;
 		}
+		
+		new DataParser(fileRead);
 		
 	}
 	
