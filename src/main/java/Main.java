@@ -1,7 +1,6 @@
 package main.java;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -19,7 +18,7 @@ public class Main {
 		
 		while(args.length == 0)
 			args = inputToArgs();
-		Debug.printf("%i arg found", args.length);
+		Debug.printf("%d arg found\n", args.length);
 		String filename = args[0];
 		if(filename.charAt(0) == '"' && filename.charAt(filename.length()-1) == '"')
 			filename = filename.substring(1, filename.length()-1);
@@ -45,16 +44,14 @@ public class Main {
 	 */
 	private static String[] inputToArgs(){
 		Scanner in = new Scanner(System.in);
-		ArrayList<String> args = new ArrayList<String>();
-		
+		String[] filename = new String[1];
 		System.out.println("Enter a filename or a filepath to read."); 
 		
-		while(in.hasNext()){
-			args.add(in.next());
-		}
+		filename[0] = in.nextLine();
+		filename[0] += (filename[0].contains(".")) ? "" : ".txt";
 		
 		in.close();
-		return args.toArray(new String[args.size()]);
+		return filename;
 	}
 	
 }
