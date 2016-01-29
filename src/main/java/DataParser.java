@@ -18,8 +18,11 @@ public class DataParser {
 		Scanner reader;
 		
 		try {
-			write = new File(timeToDateString(Files.readAttributes(read.toPath(), BasicFileAttributes.class).lastModifiedTime()) + "." + EXT);
-			//TODO include file number for ^. Should be in format: "yyyy-mm-dd_xxx.csv"; as of now: "yyyy-mm-dd.csv"
+			String filename = timeToStringDate(Files.readAttributes(read.toPath(), BasicFileAttributes.class).lastModifiedTime())
+					+ "_" + String.format("%03d", new DataController().getCount()) + "." + EXT;
+			Debug.println("Writer filename = " + filename);
+			write = new File(filename);
+			//TODO include file number for ^. Should be in format: "yyyy-dd-mm_xxx.csv"; as of now: "yyyy-dd-mm.csv"
 			//TODO implement a .dat file to keep track of 1. date 2. count for that day; also make method to keep track of this
 			reader = new Scanner(read);
 			writer = new FileWriter(write);
@@ -47,8 +50,11 @@ public class DataParser {
 	 * @param t Time Stamp
 	 * @return Date as a String
 	 */
-	private String timeToDateString(java.nio.file.attribute.FileTime t){
-		String date = t.toString();
-		return date.substring(0, 10);
+	public static String timeToStringDate(java.nio.file.attribute.FileTime t){
+		return timeToStringDate(t.toString());
+	}
+	
+	public static String timeToStringDate(String time){
+		return time.substring(0, 10);
 	}
 }
