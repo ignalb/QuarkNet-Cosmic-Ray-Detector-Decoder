@@ -1,0 +1,17 @@
+Displays
+** DC C0=## C1=## C2=## C3=## ** : Display Counter & Control registers: ___ 
+
+** DS S0=######## S1=######## S2=######## S3=######## S4=######## S5=######## ** : Scalars: S0-S3=counters, S4=Trigger, S5=Time. # hexadecimal number
+
+** DT T0=## T1=## T2=## T3=## ** : Display Time control registers: ___
+
+Writers
+** WC 00 n# ** : Counter Control: n=coincidence(0,1,2,3), # hexadecimal => counters in binary. ex: d_16 => 13_10 => 1101_2
+
+** WT mm nn **
+
+** ST 0 || ST n m ** : Timer Counter: 0=disable, n=(1:status, 2:1+counters(total), 3:1+counters(since last)), m=minutes
+	ST Line: "ST #### -### +### #### ###### ###### V ## ######## ### #### ######## ########"
+		"ST [mBar] [GpsDegC] [1ppsDly] [CPU_Vcc] [GpsUTC] [GpsDate] [GpsVld] [GpsSat#] [1ppsTime] [CodeVer] [SerNum] [TMCregs] [CtrlRegs]"
+	DS Line: "DS ######## ######## ######### ######### ########"
+		"DS [Ch0Cnts] [Ch1Cnts] [Ch2Cnts] [Ch3Cnts] [TrigCnt]"
