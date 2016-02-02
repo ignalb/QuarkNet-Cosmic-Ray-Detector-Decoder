@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class DataParser {
 
 	private static final String EXT = "csv";
-	private ArrayList<DataStorage> data = new ArrayList<DataStorage>();
+	private ArrayList<DataStorage> dataCollections = new ArrayList<DataStorage>();
 	private String[] buffer;
 	
 	public DataParser(File read){

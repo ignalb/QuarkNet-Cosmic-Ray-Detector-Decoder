@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 public class DataStorage {
 
-	private ArrayList<DisplayST> st = new ArrayList<DisplayST>();
-	private ArrayList<DisplayDS> ds = new ArrayList<DisplayDS>();
+	private ArrayList<Data> data = new ArrayList<Data>();
 	private DataType type;
 	private int deltaT;		//in minutes
 	private long tTime = 0;	//elapsed time (in minutes)
@@ -15,26 +14,6 @@ public class DataStorage {
 		deltaT = dt;
 	}
 	
-	public void addData(DisplayST st){
-		addST(st);
-	}
-	public void addData(DisplayST st, DisplayDS ds){
-		addST(st); addDS(ds);
-	}
-	private void addST(DisplayST st){
-		this.st.add(st);
-		tTime += deltaT;
-	}
-	private void addDS(DisplayDS ds){
-		this.ds.add(ds);
-	}
-	
-	public ArrayList<DisplayST> getSTs(){
-		return st;
-	}
-	public ArrayList<DisplayDS> getDSs(){
-		return ds;
-	}
 	public int getDeltaTime(){
 		return deltaT;
 	}
