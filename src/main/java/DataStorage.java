@@ -15,11 +15,17 @@ public class DataStorage {
 		deltaT = dt;
 	}
 	
-	public void addST(DisplayST st){
+	public void addData(DisplayST st){
+		addST(st);
+	}
+	public void addData(DisplayST st, DisplayDS ds){
+		addST(st); addDS(ds);
+	}
+	private void addST(DisplayST st){
 		this.st.add(st);
 		tTime += deltaT;
 	}
-	public void addDS(DisplayDS ds){
+	private void addDS(DisplayDS ds){
 		this.ds.add(ds);
 	}
 	
