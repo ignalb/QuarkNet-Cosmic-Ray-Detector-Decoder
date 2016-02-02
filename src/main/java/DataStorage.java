@@ -14,6 +14,17 @@ public class DataStorage {
 		deltaT = dt;
 	}
 	
+	protected void addData(Data d){
+		data.add(d);
+	}
+	public void addData(DisplayST st){
+		addData(st, null);
+	}
+	public void addData(DisplayST st, DisplayDS ds){
+		tTime += deltaT;
+		addData(new Data(tTime, st, ds));
+	}
+	
 	public int getDeltaTime(){
 		return deltaT;
 	}
