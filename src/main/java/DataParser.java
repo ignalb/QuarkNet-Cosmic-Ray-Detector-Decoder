@@ -5,11 +5,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DataParser {
 
 	private static final String EXT = "csv";
+	private ArrayList<DataStorage> data = new ArrayList<DataStorage>();
 	private String[] buffer;
 	
 	public DataParser(File read){
@@ -22,10 +24,10 @@ public class DataParser {
 					+ "_" + String.format("%03d", new DataController().getCount()) + "." + EXT;
 			Debug.println("Writer filename = " + filename);
 			write = new File(filename);
-			//TODO include file number for ^. Should be in format: "yyyy-dd-mm_xxx.csv"; as of now: "yyyy-dd-mm.csv"
-			//TODO implement a .dat file to keep track of 1. date 2. count for that day; also make method to keep track of this
 			reader = new Scanner(read);
 			writer = new FileWriter(write);
+			//TODO REDO this so that the String[] buffer is not needed. (In a smart way) make Scanner radix 16 when needed.
+			//TODO when an ST is set create a new DataStorage of right type
 			while(reader.hasNext()){
 				buffer = readToBuffer(reader);
 				parse(buffer, writer);
