@@ -9,9 +9,6 @@ public class Main {
 	 * @param args <ul>
 	 * 		<li><em>file_name.txt</em> in current path containing raw data</li> <ul><li>ex: data01261601.txt</li></ul>
 	 * 		<li><em>file_path/file_name.txt</em> containing raw data</li> <ul><li>ex: C:\Users\<em>user</em>\Desktop\data01261601.txt</li></ul>
-	 * 		<li>Direct raw data from zTerm or HyperText</li> <ul><li>__</li></ul> </ul>
-	 * 			//TODO Check names of programs and fix if needed
-	 * 			//TODO provide sample data
 	 */
 	public static void main(String[] args){
 		File fileRead;
