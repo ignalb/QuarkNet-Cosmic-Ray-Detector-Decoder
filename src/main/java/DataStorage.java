@@ -15,26 +15,34 @@ public class DataStorage {
 	}
 	
 	public void addData(DisplayST st){
-		if(data.get(data.size()-1).hasST()){
-			tTime += deltaT;
-			data.add(new Data(tTime, st));
+		if(data.isEmpty()){
 		} else {
-			int index = data.size()-1;
-			Data d = data.get(index);
-			d.setST(st);
-			data.set(index, d);
+			if(data.get(data.size()-1).hasST()){
+			} else {
+				int index = data.size()-1;
+				Data d = data.get(index);
+				d.setST(st);
+				data.set(index, d);
+				return;
+			}
 		}
+		tTime += deltaT;
+		data.add(new Data(tTime, st));
 	}
 	public void addData(DisplayDS ds){
-		if(data.get(data.size()-1).hasDS()){
-			tTime += deltaT;
-			data.add(new Data(tTime, ds));
+		if(data.isEmpty()){
 		} else {
-			int index = data.size()-1;
-			Data d = data.get(index);
-			d.setDS(ds);
-			data.set(index, d);
+			if(data.get(data.size()-1).hasDS()){
+			} else {
+				int index = data.size()-1;
+				Data d = data.get(index);
+				d.setDS(ds);
+				data.set(index, d);
+				return;
+			}
 		}
+		tTime += deltaT;
+		data.add(new Data(tTime, ds));
 	}
 	
 	public int getDeltaTime(){

@@ -19,18 +19,10 @@ public class Data {
 	}
 	
 	public void setST(DisplayST st){
-		if(st == null){
-			this.st = st;
-		} else {
-			System.err.println("Failed to set ST : ST is protected and already has a value.");
-		}
+		this.st = st;
 	}
 	public void setDS(DisplayDS ds){
-		if(ds == null){
-			this.ds = ds;
-		} else {
-			System.err.println("Failed to set DS : DS is protected and already has a value.");
-		}
+		this.ds = ds;
 	}
 	public DisplayST getST(){
 		return st;

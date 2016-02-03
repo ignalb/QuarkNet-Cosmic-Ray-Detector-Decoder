@@ -28,7 +28,13 @@ public class DataParser {
 			
 			while(reader.hasNext()){
 				String parser = reader.nextLine();
-				parse(parser);				
+				parse(parser);
+				
+				try{	//TODO debug. is temp
+					ArrayList<Data> ds = dataCollections.get(0).getData();
+					Data d = ds.get(ds.size()-1);
+					Debug.printf("%2d: hasST=%b hasDS=%b\n", ds.size(), d.hasST(), d.hasDS());
+				}catch(Exception e){}
 			}
 			
 			write(writer, DataRequest.COUNTS);
@@ -62,12 +68,12 @@ public class DataParser {
 		// DS reader parser
 			//TODO remove second version as it is intended to show the user not collect data
 			if(dataCollections.size() > 0){
-				dataCollections.get(dataCollections.size()).addData(DisplayDS.parseDS(parser));
+				dataCollections.get(dataCollections.size()-1).addData(DisplayDS.parseDS(parser));
 			}
 		} else if(parser.matches("ST \\d{4}( [+|-]\\d{3}){2} \\d{4}( \\d{6}){2} [A|V] \\d{2} [\\d|A-F|a-f]{8} \\d{3} \\d{4}( [\\d|A-F|a-f]{8}){2}")){
 		// ST reader parser
 			if(dataCollections.size() > 0){
-				dataCollections.get(dataCollections.size()).addData(DisplayST.parseST(parser));
+				dataCollections.get(dataCollections.size()-1).addData(DisplayST.parseST(parser));
 			}
 		}
 	}
@@ -87,6 +93,12 @@ public class DataParser {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		try {
+			f.flush();
+			f.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
