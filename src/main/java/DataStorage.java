@@ -14,15 +14,27 @@ public class DataStorage {
 		deltaT = dt;
 	}
 	
-	protected void addData(Data d){
-		data.add(d);
-	}
 	public void addData(DisplayST st){
-		addData(st, null);
+		if(data.get(data.size()-1).hasST()){
+			tTime += deltaT;
+			data.add(new Data(tTime, st));
+		} else {
+			int index = data.size()-1;
+			Data d = data.get(index);
+			d.setST(st);
+			data.set(index, d);
+		}
 	}
-	public void addData(DisplayST st, DisplayDS ds){
-		tTime += deltaT;
-		addData(new Data(tTime, st, ds));
+	public void addData(DisplayDS ds){
+		if(data.get(data.size()-1).hasDS()){
+			tTime += deltaT;
+			data.add(new Data(tTime, ds));
+		} else {
+			int index = data.size()-1;
+			Data d = data.get(index);
+			d.setDS(ds);
+			data.set(index, d);
+		}
 	}
 	
 	public int getDeltaTime(){
@@ -33,6 +45,9 @@ public class DataStorage {
 	}
 	public DataType getSTtype(){
 		return type;
+	}
+	public ArrayList<Data> getData(){
+		return data;
 	}
 }
 

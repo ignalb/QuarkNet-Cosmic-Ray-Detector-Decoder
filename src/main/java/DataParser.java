@@ -12,10 +12,9 @@ public class DataParser {
 
 	private static final String EXT = "csv";
 	private ArrayList<DataStorage> dataCollections = new ArrayList<DataStorage>();
-	private String[] buffer;
 	
 	public DataParser(File read){
-		File write;
+		File writeF;
 		FileWriter writer;
 		Scanner reader;
 		
@@ -23,28 +22,72 @@ public class DataParser {
 			String filename = timeToStringDate(Files.readAttributes(read.toPath(), BasicFileAttributes.class).lastModifiedTime())
 					+ "_" + String.format("%03d", new DataController().getCount()) + "." + EXT;
 			Debug.println("Writer filename = " + filename);
-			write = new File(filename);
+			writeF = new File(filename);
 			reader = new Scanner(read);
-			writer = new FileWriter(write);
-			//TODO REDO this so that the String[] buffer is not needed. (In a smart way) make Scanner radix 16 when needed.
-			//TODO when an ST is set create a new DataStorage of right type
+			writer = new FileWriter(writeF);
+			
 			while(reader.hasNext()){
-				buffer = readToBuffer(reader);
-				parse(buffer, writer);
+				String parser = reader.nextLine();
+				parse(parser);				
 			}
+			
+			write(writer, DataRequest.COUNTS);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
-	public void parse(String[] s, FileWriter f) {
-		
+	private void parse(String parser) {
+		if(parser.equals("ST 0") || parser.matches("ST [1-3] (\\d){1,}")){
+		// ST writer parser
+			int type = Integer.parseInt(Character.toString(parser.charAt(3)));
+			if(type >=1 && type <= 3){
+				int dt = Integer.parseInt(parser.substring(5, parser.length()));
+				DataStorage data = null;
+				switch(type){
+					case 1:
+						data = new DataStorage(DataType.ST1, dt);
+						break;
+					case 2:
+						data = new DataStorage(DataType.ST2, dt);
+						break;
+					case 3:
+						data = new DataStorage(DataType.ST3, dt);
+						break;
+				}
+				dataCollections.add(data);
+			}
+		}else if(parser.matches("DS( [\\d|A-F|a-f]{8}){5}") || parser.matches("DS( C\\d=[\\d|A-F|a-f]{8}){5}")){
+		// DS reader parser
+			//TODO remove second version as it is intended to show the user not collect data
+			if(dataCollections.size() > 0){
+				dataCollections.get(dataCollections.size()).addData(DisplayDS.parseDS(parser));
+			}
+		} else if(parser.matches("ST \\d{4}( [+|-]\\d{3}){2} \\d{4}( \\d{6}){2} [A|V] \\d{2} [\\d|A-F|a-f]{8} \\d{3} \\d{4}( [\\d|A-F|a-f]{8}){2}")){
+		// ST reader parser
+			if(dataCollections.size() > 0){
+				dataCollections.get(dataCollections.size()).addData(DisplayST.parseST(parser));
+			}
+		}
 	}
 	
-	public String[] readToBuffer(Scanner in){
-		
-		return null;
+	private void write(FileWriter f, DataRequest requestType){
+		for(DataStorage datas : dataCollections){
+			try {
+				f.append("Time,Ch0,Ch1,Ch2,Ch3\n");
+				switch(requestType){
+					case COUNTS:
+						for(Data d : datas.getData()){
+							int[] ch = d.getDS().getCounts();
+							f.append(d.getTime() + "," + ch[0] + "," + ch[1] + "," + ch[2] + "," + ch[3] + "\n");
+						}
+						break;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -59,4 +102,8 @@ public class DataParser {
 	public static String timeToStringDate(String time){
 		return time.substring(0, 10);
 	}
+}
+
+enum DataRequest {
+	COUNTS
 }
