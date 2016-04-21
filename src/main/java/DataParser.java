@@ -3,8 +3,6 @@ package main.java;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,8 +17,7 @@ public class DataParser {
 		Scanner reader;
 		
 		try {
-			String filename = timeToStringDate(Files.readAttributes(read.toPath(), BasicFileAttributes.class).lastModifiedTime())
-					+ "_" + String.format("%03d", new DataController().getCount()) + "." + EXT;
+			String filename = read.getPath().substring(0, read.getPath().lastIndexOf('.')) + "." + EXT;
 			Debug.println("Writer filename = " + filename);
 			writeF = new File(filename);
 			reader = new Scanner(read);
